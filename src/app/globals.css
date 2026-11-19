@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — Strict Black and White Theme
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-primary: #6b6b73;
+  --border: #e4e4e7;
+  --input: #d4d4d8;
+  --ring: #0a0a0a;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --sidebar: #fafafa;
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-primary);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar: var(--sidebar);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  a,
+  button,
+  select,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Typography hierarchy */
+@utility text-page-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+@utility text-section-title {
+  font-size: 1.0rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+}
+
+@utility text-card-title {
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+@utility text-body {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+@utility text-secondary {
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  color: var(--muted-primary);
+}
+
+@utility text-caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--muted-primary);
+}
+
+/* Modal / tooltip animation */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes overlay-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes modal-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+.modal-overlay[data-state="open"] {
+  animation: overlay-in 150ms ease-out;
+}
+
+.modal-overlay[data-state="closed"] {
+  animation: overlay-out 150ms ease-in forwards;
+}
+
+.modal-panel[data-state="open"] {
+  animation: modal-in 150ms ease-out;
+}
+
+.modal-panel[data-state="closed"] {
+  animation: modal-out 150ms ease-in forwards;
+}
