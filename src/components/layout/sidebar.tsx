@@ -76,12 +76,12 @@ export function SidebarContent({
             ))}
           </ul>
         </nav>
-        <SidebarUser
+        {/* <SidebarUser
           name={user.name}
           email={user.email}
           collapsed={collapsed}
           onLogout={onLogout}
-        />
+        /> */}
       </div>
     </div>
   );

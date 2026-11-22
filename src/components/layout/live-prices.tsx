@@ -139,7 +139,7 @@ export function LivePrices({ collapsed = false }: LivePricesProps) {
                   <span className="font-semibold text-foreground">
                     {item.currency}{item.price.toFixed(2)}
                   </span>
-                  <div className="flex items-center justify-end gap-0.5 text-[10px] font-medium">
+                  {/* <div className="flex items-center justify-end gap-0.5 text-[10px] font-medium">
                     {item.trend === "up" ? (
                       <>
                         <TrendingUpIcon className="size-2.5 text-foreground" />
@@ -153,7 +153,7 @@ export function LivePrices({ collapsed = false }: LivePricesProps) {
                     ) : (
                       <span className="text-muted-foreground">0.0%</span>
                     )}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))
@@ -167,12 +167,9 @@ export function LivePrices({ collapsed = false }: LivePricesProps) {
           href="/pricing"
           className="flex items-center gap-1 text-[11px] font-medium text-foreground hover:underline"
         >
-          <span>View All in Grid</span>
+          <span>View All</span>
           <ArrowRightIcon className="size-3" />
         </Link>
-        <span className="text-[9px] text-muted-foreground">
-          Auto-sync
-        </span>
       </div>
     </div>
   );

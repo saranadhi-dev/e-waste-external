@@ -123,7 +123,7 @@ export function Modal({
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
         data-state={state}
-        className="modal-panel relative flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col rounded-xl border border-border bg-card text-card-foreground shadow-xl outline-none"
+        className="modal-panel relative flex max-h-[calc(100dvh-2rem)] w-full max-w-lg flex-col rounded-lg border border-border bg-card text-card-foreground shadow-xl outline-none"
       >
         {(title || description || (showCloseButton && !preventClose)) && (
           <div className="flex items-start gap-4 p-5 pb-0">

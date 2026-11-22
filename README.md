@@ -164,6 +164,10 @@ All database reads/writes and storage uploads/deletions pass through authenticat
 Create `.env.local` based on `.env.example`:
 
 ```env
+# Runtime target: prod uses cloud Firebase; any other value uses local emulators.
+APP_ENV=local
+NEXT_PUBLIC_APP_ENV=local
+
 # Firebase Client Configuration (Public)
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
@@ -172,13 +176,27 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
+# Emulator endpoints (used whenever APP_ENV is not prod)
+NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
+NEXT_PUBLIC_FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
+NEXT_PUBLIC_STORAGE_EMULATOR_HOST=127.0.0.1:9199
+FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
+STORAGE_EMULATOR_HOST=127.0.0.1:9199
+
 # Firebase Admin SDK Configuration (Server-Only Secrets)
 FIREBASE_PROJECT_ID=your_project_id
 FIREBASE_CLIENT_EMAIL=your_service_account_email
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 ```
 
-*Note: In development without live Firebase credentials, a built-in memory service provides mock data and base64 preview storage so all UI flows and pages function seamlessly.*
+Set both `APP_ENV` and `NEXT_PUBLIC_APP_ENV` to `prod` in production. Any other
+value selects the local Firebase emulators. Start them with the Firebase CLI
+before running the app.
+
+In local mode, the app uses the Firebase Auth, Firestore, and Storage emulators.
+The in-memory fallback remains available only when production credentials are
+missing.
 
 ---
 

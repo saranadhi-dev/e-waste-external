@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (!idToken) {
       return apiError("Missing ID token", 400);
     }
-
+    console.log("Login ",idToken)
     const sessionCookie = await createSessionFromIdToken(idToken);
     const cookieStore = await cookies();
     const cookieOpts = getSessionCookieOptions(sessionCookie);

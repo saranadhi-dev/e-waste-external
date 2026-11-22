@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { SuccessDialog } from "@/components/ui/modal";
-import { StoreIcon, AlertCircleIcon, SaveIcon } from "@/components/ui/icons";
+import { StoreIcon, AlertCircleIcon, SaveIcon, LogOutIcon } from "@/components/ui/icons";
 import { validateStoreInput } from "@/lib/validations/store";
 import type { StoreInput } from "@/types/store";
+import { logoutUser } from "@/lib/auth/client-auth";
+import { useRouter } from "next/navigation";
 
 export default function StoreSettingsPage() {
   const [formData, setFormData] = useState<StoreInput>({
@@ -28,6 +30,7 @@ export default function StoreSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     async function loadStore() {
@@ -102,6 +105,12 @@ export default function StoreSettingsPage() {
     }
   };
 
+  const handleLogout = async () => {
+    await logoutUser();
+    router.push("/login");
+    router.refresh();
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -122,9 +131,6 @@ export default function StoreSettingsPage() {
       {/* Page Title */}
       <div>
         <h1 className="text-page-title text-foreground">Store Profile & Settings</h1>
-        <p className="text-secondary mt-1">
-          Configure your individual store information, contact details, and collection address.
-        </p>
       </div>
 
       {serverError && (
@@ -145,9 +151,6 @@ export default function StoreSettingsPage() {
             </div>
             <div>
               <CardTitle className="text-base font-semibold">Store Information</CardTitle>
-              <CardDescription>
-                Details used for verification and collection coordination
-              </CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -158,7 +161,6 @@ export default function StoreSettingsPage() {
               <Input
                 id="store-name"
                 label="Store Name *"
-                placeholder="e.g. Apex Electronics Collection"
                 value={formData.storeName}
                 onChange={(e) => handleChange("storeName", e.target.value)}
                 error={errors.storeName}
@@ -168,7 +170,6 @@ export default function StoreSettingsPage() {
               <Input
                 id="owner-name"
                 label="Owner Name *"
-                placeholder="e.g. Jane Doe"
                 value={formData.ownerName}
                 onChange={(e) => handleChange("ownerName", e.target.value)}
                 error={errors.ownerName}
@@ -179,7 +180,6 @@ export default function StoreSettingsPage() {
                 id="store-email"
                 type="email"
                 label="Official Email *"
-                placeholder="store@example.com"
                 value={formData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 error={errors.email}
@@ -190,7 +190,6 @@ export default function StoreSettingsPage() {
                 id="store-phone"
                 type="tel"
                 label="Mobile Number *"
-                placeholder="+1 555-0123"
                 value={formData.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 error={errors.phone}
@@ -201,7 +200,6 @@ export default function StoreSettingsPage() {
             <Input
               id="store-location"
               label="Location / Area (Optional)"
-              placeholder="e.g. North Industrial District, Sector 4"
               value={formData.location || ""}
               onChange={(e) => handleChange("location", e.target.value)}
               hint="Flexible text input prepared for Google Maps integration"
@@ -210,7 +208,6 @@ export default function StoreSettingsPage() {
             <Textarea
               id="store-address"
               label="Complete Street Address *"
-              placeholder="Building number, street, landmark..."
               value={formData.address}
               onChange={(e) => handleChange("address", e.target.value)}
               error={errors.address}
@@ -221,7 +218,6 @@ export default function StoreSettingsPage() {
               <Input
                 id="store-city"
                 label="City *"
-                placeholder="e.g. San Jose"
                 value={formData.city}
                 onChange={(e) => handleChange("city", e.target.value)}
                 error={errors.city}
@@ -231,7 +227,6 @@ export default function StoreSettingsPage() {
               <Input
                 id="store-state"
                 label="State / Province *"
-                placeholder="e.g. California"
                 value={formData.state}
                 onChange={(e) => handleChange("state", e.target.value)}
                 error={errors.state}
@@ -241,7 +236,6 @@ export default function StoreSettingsPage() {
               <Input
                 id="store-pincode"
                 label="Pincode / Postal Code *"
-                placeholder="e.g. 95110"
                 value={formData.pincode}
                 onChange={(e) => handleChange("pincode", e.target.value)}
                 error={errors.pincode}
@@ -263,6 +257,24 @@ export default function StoreSettingsPage() {
           </form>
         </CardContent>
       </Card>
+
+      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-2">
+        <div>
+          <p className="text-sm font-medium text-foreground">Sign out</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            You can sign back in anytime using your account credentials.
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={handleLogout}
+          className="w-full gap-2 sm:w-auto"
+        >
+          <LogOutIcon className="size-4" />
+          <span>Sign out</span>
+        </Button>
+      </div>
 
       <SuccessDialog
         open={showSuccessModal}

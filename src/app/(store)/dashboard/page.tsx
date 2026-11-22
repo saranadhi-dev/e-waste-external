@@ -90,24 +90,8 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-page-title text-foreground">Welcome</h1>
-          {/* <p className="text-secondary mt-1">
-            Here&apos;s an overview of your store workspace and collection activity.
-          </p> */}
         </div>
-        {/* <div className="flex flex-wrap items-center gap-3">
-          <Link href="/ewaste/add">
-            <Button variant="primary" className="gap-2">
-              <PlusIcon className="size-4" />
-              <span>Add E-Waste Entry</span>
-            </Button>
-          </Link>
-          <Link href="/settings">
-            <Button variant="secondary" className="gap-2">
-              <SettingsIcon className="size-4" />
-              <span>Store Settings</span>
-            </Button>
-          </Link>
-        </div> */}
+       
       </div>
 
       {error && (
@@ -123,14 +107,16 @@ export default function DashboardPage() {
           const Icon = card.icon;
           return (
             <Card key={i} className="border-border">
-              <CardContent className="p-5">
+              <CardContent className="px-5 py-2">
+
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
                   <div className="grid size-9 place-items-center rounded-lg bg-secondary text-foreground">
                     <Icon className="size-5" />
                   </div>
                 </div>
-                <div className="mt-3">
+
+                <div className="mt-1">
                   <p className="text-3xl font-bold tracking-tight text-foreground">
                     {loading ? (
                       <span className="inline-block h-8 w-12 animate-pulse rounded bg-muted" />
@@ -145,62 +131,6 @@ export default function DashboardPage() {
           );
         })}
       </div>
-
-      {/* Store Profile Summary Banner */}
-      {/* <Card className="border-border bg-card">
-        <CardHeader className="flex flex-row items-center justify-between border-b border-border pb-4">
-          <div className="flex items-center gap-3">
-            <div className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary">
-              <StoreIcon className="size-5" />
-            </div>
-            <div>
-              <CardTitle className="text-base font-semibold">
-                {store?.storeName || "My Collection Store"}
-              </CardTitle>
-              <CardDescription>
-                {store?.ownerName ? `Managed by ${store.ownerName}` : "Store details registered"}
-              </CardDescription>
-            </div>
-          </div>
-          <Link href="/settings">
-            <Button variant="secondary" size="sm" className="gap-1.5 text-xs">
-              <SettingsIcon className="size-3.5" />
-              <span>Edit Details</span>
-            </Button>
-          </Link>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-3 text-sm">
-          <div className="flex items-start gap-2.5">
-            <MapPinIcon className="size-4 shrink-0 text-muted-foreground mt-0.5" />
-            <div>
-              <p className="font-medium text-foreground">Location</p>
-              <p className="text-muted-foreground text-xs mt-0.5">
-                {store?.address
-                  ? `${store.address}, ${store.city}, ${store.state} - ${store.pincode}`
-                  : "Address not set"}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2.5">
-            <PhoneIcon className="size-4 shrink-0 text-muted-foreground mt-0.5" />
-            <div>
-              <p className="font-medium text-foreground">Contact Phone</p>
-              <p className="text-muted-foreground text-xs mt-0.5">
-                {store?.phone || "No phone registered"}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2.5">
-            <MailIcon className="size-4 shrink-0 text-muted-foreground mt-0.5" />
-            <div>
-              <p className="font-medium text-foreground">Store Email</p>
-              <p className="text-muted-foreground text-xs mt-0.5">
-                {store?.email || "No email registered"}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card> */}
 
       {/* Recent Entries Section */}
       <div className="space-y-4">

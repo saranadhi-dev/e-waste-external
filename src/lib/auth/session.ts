@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { adminAuth, isFirebaseAdminConfigured } from "@/lib/firebase/admin";
+import { adminAuth } from "@/lib/firebase/admin";
 import type { UserSession } from "@/types/auth";
 
 export const SESSION_COOKIE_NAME = "__session";
@@ -32,20 +32,9 @@ export function getSessionCookieOptions(value: string, maxAge = SESSION_EXPIRES_
  * Creates a Firebase session cookie from an ID token.
  */
 export async function createSessionFromIdToken(idToken: string): Promise<string> {
-  if (isFirebaseAdminConfigured()) {
-    return await adminAuth.createSessionCookie(idToken, {
-      expiresIn: SESSION_EXPIRES_IN,
-    });
-  }
-
-  // Fallback for development without configured credentials
-  // Encode dummy session token with payload
-  const demoPayload = {
-    uid: idToken.startsWith("demo-") ? idToken : `user_${Date.now()}`,
-    email: "storeowner@example.com",
-    created: Date.now(),
-  };
-  return Buffer.from(JSON.stringify(demoPayload)).toString("base64url");
+  return await adminAuth.createSessionCookie(idToken, {
+    expiresIn: SESSION_EXPIRES_IN,
+  });
 }
 
 /**
@@ -54,36 +43,17 @@ export async function createSessionFromIdToken(idToken: string): Promise<string>
 export async function verifySession(sessionCookie: string): Promise<UserSession | null> {
   if (!sessionCookie) return null;
 
-  if (isFirebaseAdminConfigured()) {
-    try {
-      const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true);
-      return {
-        uid: decodedClaims.uid,
-        email: decodedClaims.email || "",
-        name: decodedClaims.name || "",
-      };
-    } catch (error) {
-      console.error("Session verification failed:", error);
-      return null;
-    }
-  }
-
-  // Development fallback for unconfigured environment
   try {
-    const raw = Buffer.from(sessionCookie, "base64url").toString("utf-8");
-    const parsed = JSON.parse(raw);
-    if (parsed.uid) {
-      return {
-        uid: parsed.uid,
-        email: parsed.email || "storeowner@example.com",
-        name: parsed.name || "Store Owner",
-      };
-    }
-  } catch {
-    // invalid token
+    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true);
+    return {
+      uid: decodedClaims.uid,
+      email: decodedClaims.email || "",
+      name: decodedClaims.name || "",
+    };
+  } catch (error) {
+    console.error("Session verification failed:", error);
+    return null;
   }
-
-  return null;
 }
 
 /**

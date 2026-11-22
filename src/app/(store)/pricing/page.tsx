@@ -84,23 +84,10 @@ export default function PricingPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-row gap-4 items-center justify-between sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-page-title text-foreground">Live E-Waste Market Rates</h1>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-medium text-foreground">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-foreground" />
-              </span>
-              Realtime Rates
-            </span>
-          </div>
-          <p className="text-secondary mt-1">
-            Current estimated market recycling and collection scrap rates. Values auto-sync in real time.
-          </p>
+          <h1 className="text-page-title text-foreground">Live Rates</h1>
         </div>
-
         <div className="flex flex-wrap items-center gap-3">
           <Button
             variant="secondary"
@@ -110,127 +97,66 @@ export default function PricingPage() {
             className="gap-2"
           >
             <RefreshIcon className={cn("size-3.5", refreshing && "animate-spin")} />
-            <span>{refreshing ? "Refreshing..." : "Refresh Rates"}</span>
+            <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
           </Button>
-
-    
         </div>
       </div>
 
-      {/* Summary KPI Strip
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Card className="border-border">
-          <CardContent className="p-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Highest Value Material
-            </p>
-            <div className="mt-1 flex items-baseline justify-between">
-              <span className="text-lg font-bold text-foreground truncate max-w-[170px]">
-                {highestPriced?.category || "—"}
-              </span>
-              <span className="text-lg font-bold text-foreground">
-                {highestPriced ? `${highestPriced.currency}${highestPriced.price.toFixed(2)}/${highestPriced.unit}` : "—"}
-              </span>
-            </div>
-            <p className="text-caption mt-0.5">Top-tier scrap recovery category</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border">
-          <CardContent className="p-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Top 24h Gainer
-            </p>
-            <div className="mt-1 flex items-baseline justify-between">
-              <span className="text-lg font-bold text-foreground truncate max-w-[170px]">
-                {topGainer?.category || "—"}
-              </span>
-              <span className="flex items-center text-sm font-semibold text-foreground gap-1">
-                <TrendingUpIcon className="size-3.5" />
-                +{topGainer?.change24h || 0}%
-              </span>
-            </div>
-            <p className="text-caption mt-0.5">Highest price increase today</p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border">
-          <CardContent className="p-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Average Scrap Rate (per kg)
-            </p>
-            <div className="mt-1 flex items-baseline justify-between">
-              <span className="text-2xl font-bold text-foreground">
-                ${averagePriceKg}
-              </span>
-              <Badge variant="outline" className="text-xs">
-                Per kg index
-              </Badge>
-            </div>
-            <p className="text-caption mt-0.5">Calculated across weight-based electronics</p>
-          </CardContent>
-        </Card>
-      </div> */}
-
       {/* Filter and Search Bar */}
-      <Card className="border-border">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="relative">
-              <Input
-                id="search-prices"
-                placeholder="Search category or material..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
-              />
-              <SearchIcon className="absolute left-3 top-2.5 size-4 text-muted-foreground pointer-events-none" />
-            </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="relative">
+          <Input
+            id="search-prices"
+            placeholder="Search category or material..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+          <SearchIcon className="absolute left-3 top-2.5 size-4 text-muted-foreground pointer-events-none" />
+        </div>
 
-            <div className="flex gap-2">
-              <select
-                aria-label="Filter by unit"
-                value={unitFilter}
-                onChange={(e) => setUnitFilter(e.target.value)}
-                className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-              >
-                <option value="all">All Units</option>
-                <option value="kg">Per Kilogram (kg)</option>
-                <option value="piece">Per Piece</option>
-              </select>
-            </div>
+        <div className="flex gap-2">
+          <select
+            aria-label="Filter by unit"
+            value={unitFilter}
+            onChange={(e) => setUnitFilter(e.target.value)}
+            className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <option value="all">All Units</option>
+            <option value="kg">Per Kilogram (kg)</option>
+            <option value="piece">Per Piece</option>
+          </select>
+        </div>
 
-            <div className="flex gap-2">
-              <select
-                aria-label="Filter by trend"
-                value={trendFilter}
-                onChange={(e) => setTrendFilter(e.target.value)}
-                className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-              >
-                <option value="all">All Trends</option>
-                <option value="up">Trending Up (Gaining)</option>
-                <option value="down">Trending Down (Declining)</option>
-                <option value="stable">Stable</option>
-              </select>
+        <div className="flex gap-2">
+          <select
+            aria-label="Filter by trend"
+            value={trendFilter}
+            onChange={(e) => setTrendFilter(e.target.value)}
+            className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <option value="all">All Trends</option>
+            <option value="up">Trending Up (Gaining)</option>
+            <option value="down">Trending Down (Declining)</option>
+            <option value="stable">Stable</option>
+          </select>
 
-              {(search || unitFilter !== "all" || trendFilter !== "all") && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setSearch("");
-                    setUnitFilter("all");
-                    setTrendFilter("all");
-                  }}
-                  className="shrink-0 text-xs"
-                >
-                  Clear
-                </Button>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          {(search || unitFilter !== "all" || trendFilter !== "all") && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSearch("");
+                setUnitFilter("all");
+                setTrendFilter("all");
+              }}
+              className="shrink-0 text-xs"
+            >
+              Clear
+            </Button>
+          )}
+        </div>
+      </div>
 
       {/* Pricing Grid */}
       {loading && prices.length === 0 ? (
@@ -266,7 +192,7 @@ export default function PricingPage() {
                     <span className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
                       Per {item.unit}
                     </span>
-                    <span
+                    {/* <span
                       className={cn(
                         "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-semibold border",
                         item.trend === "up" && "bg-secondary text-foreground border-border",
@@ -287,15 +213,15 @@ export default function PricingPage() {
                       ) : (
                         <span>0.0%</span>
                       )}
-                    </span>
+                    </span> */}
                   </div>
 
-                  <h3 className="mt-2 text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
                     {item.category}
                   </h3>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-border flex items-baseline justify-between">
+                <div className="mt-2 pt-2 border-t border-border flex items-baseline justify-between">
                   <div className="flex items-baseline gap-1">
                     <span className="text-2xl font-bold tracking-tight text-foreground">
                       {item.currency}{item.price.toFixed(2)}
@@ -319,9 +245,6 @@ export default function PricingPage() {
 
       {/* Footer Info */}
       <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground border-t border-border pt-4">
-        <span>
-          Prices are fetched live from Cloud Firestore real-time database (with Fallback Development Mode).
-        </span>
         {lastUpdated && (
           <span className="mt-1 sm:mt-0">
             Last updated: {new Date(lastUpdated).toLocaleTimeString()}

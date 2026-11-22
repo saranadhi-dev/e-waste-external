@@ -46,14 +46,11 @@ export default function ForgotPasswordPage() {
 
   return (
     <Card className="border-border shadow-sm">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto mb-3 grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
+      <CardHeader className="text-center pb-2">
+        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
           <RecycleIcon className="size-6" />
         </div>
         <CardTitle className="text-xl font-bold tracking-tight">Reset Password</CardTitle>
-        <CardDescription>
-          Enter your registered email address to receive password reset instructions
-        </CardDescription>
       </CardHeader>
 
       <CardContent>
