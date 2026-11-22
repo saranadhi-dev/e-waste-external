@@ -10,3 +10,9 @@ storage.rules
 
 firestore.rules
 
+firestore.rules
+
+.env.*
+
+
+.env.example

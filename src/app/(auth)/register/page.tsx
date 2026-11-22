@@ -57,14 +57,11 @@ export default function RegisterPage() {
 
   return (
     <Card className="border-border shadow-sm">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto mb-3 grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
+      <CardHeader className="text-center pb-2">
+        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
           <RecycleIcon className="size-6" />
         </div>
         <CardTitle className="text-xl font-bold tracking-tight">Register Store Owner</CardTitle>
-        <CardDescription>
-          Create an account to start managing your e-waste collection
-        </CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -83,7 +80,6 @@ export default function RegisterPage() {
             id="reg-fullname"
             type="text"
             label="Full name"
-            placeholder="Jane Doe"
             value={fullName}
             onChange={(e) => {
               setFullName(e.target.value);
@@ -98,7 +94,6 @@ export default function RegisterPage() {
             id="reg-email"
             type="email"
             label="Email address"
-            placeholder="storeowner@example.com"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -113,7 +108,6 @@ export default function RegisterPage() {
             id="reg-password"
             type="password"
             label="Password"
-            placeholder="At least 6 characters"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -128,7 +122,6 @@ export default function RegisterPage() {
             id="reg-confirm-password"
             type="password"
             label="Confirm password"
-            placeholder="Re-enter password"
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);

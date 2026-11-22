@@ -1,17 +1,13 @@
 import * as admin from "firebase-admin";
 
+const isProductionEnvironment = process.env.APP_ENV === "prod";
+
+
 function formatPrivateKey(key: string | undefined): string | undefined {
   if (!key) return undefined;
   return key.replace(/\\n/g, "\n");
 }
 
-export function isFirebaseAdminConfigured(): boolean {
-  return Boolean(
-    process.env.FIREBASE_PROJECT_ID &&
-    process.env.FIREBASE_CLIENT_EMAIL &&
-    process.env.FIREBASE_PRIVATE_KEY
-  );
-}
 
 function initAdmin(): admin.app.App {
   if (admin.apps.length > 0) {
@@ -23,25 +19,22 @@ function initAdmin(): admin.app.App {
   const rawKey = process.env.FIREBASE_PRIVATE_KEY;
   const privateKey = formatPrivateKey(rawKey);
 
-  if (projectId && clientEmail && privateKey) {
+  if (isProductionEnvironment && projectId && clientEmail && privateKey) {
     return admin.initializeApp({
       credential: admin.credential.cert({
         projectId,
         clientEmail,
         privateKey,
       }),
-      storageBucket:
-        process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
-        `${projectId}.firebasestorage.app`,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
     });
   }
 
-  // Fallback for development/testing when env vars are not yet populated
+  // In non-production, the Admin SDK reads emulator hosts from the environment.
   return admin.initializeApp({
-    projectId: projectId || "demo-ewaste",
-    storageBucket:
-      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
-      "demo-ewaste.firebasestorage.app",
+    projectId: projectId,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL!,
   });
 }
 

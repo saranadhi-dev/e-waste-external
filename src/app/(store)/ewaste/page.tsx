@@ -106,17 +106,13 @@ export default function EwasteListingPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-row gap-4 items-center justify-between sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-page-title text-foreground">E-Waste Entries</h1>
-          <p className="text-secondary mt-1">
-            Browse, search, and manage your collection items ({totalCount} items total).
-          </p>
         </div>
         <Link href="/ewaste/add">
-          <Button variant="primary" className="gap-2">
-            <PlusIcon className="size-4" />
-            <span>Add New Entry</span>
+          <Button variant="primary">
+            <span>Add New</span>
           </Button>
         </Link>
       </div>
@@ -129,72 +125,68 @@ export default function EwasteListingPage() {
       )}
 
       {/* Filter and Search Bar */}
-      <Card className="border-border">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="relative">
-              <Input
-                id="search-input"
-                placeholder="Search by item name..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPage(1);
-                }}
-                className="pl-9"
-              />
-              <SearchIcon className="absolute left-3 top-2.5 size-4 text-muted-foreground pointer-events-none" />
-            </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative">
+          <Input
+            id="search-input"
+            placeholder="Search by item name..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+            className="pl-9"
+          />
+          <SearchIcon className="absolute left-3 top-2.5 size-4 text-muted-foreground pointer-events-none" />
+        </div>
 
-            <Select
-              id="category-filter"
-              value={category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="all">All Categories</option>
-              {EWASTE_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </Select>
+        <Select
+          id="category-filter"
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="all">All Categories</option>
+          {EWASTE_CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </Select>
 
-            <Select
-              id="status-filter"
-              value={status}
-              onChange={(e) => {
-                setStatus(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="all">All Statuses</option>
-              {ENTRY_STATUSES.map((st) => (
-                <option key={st} value={st}>
-                  {st.replace("_", " ").toUpperCase()}
-                </option>
-              ))}
-            </Select>
+        <Select
+          id="status-filter"
+          value={status}
+          onChange={(e) => {
+            setStatus(e.target.value);
+            setPage(1);
+          }}
+        >
+          <option value="all">All Statuses</option>
+          {ENTRY_STATUSES.map((st) => (
+            <option key={st} value={st}>
+              {st.replace("_", " ").toUpperCase()}
+            </option>
+          ))}
+        </Select>
 
-            {(search || category !== "all" || status !== "all") && (
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setSearch("");
-                  setCategory("all");
-                  setStatus("all");
-                  setPage(1);
-                }}
-                className="text-xs"
-              >
-                Clear Filters
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+        {(search || category !== "all" || status !== "all") && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              setSearch("");
+              setCategory("all");
+              setStatus("all");
+              setPage(1);
+            }}
+            className="w-full text-xs"
+          >
+            Clear Filters
+          </Button>
+        )}
+      </div>
 
       {/* Content Area */}
       {loading ? (

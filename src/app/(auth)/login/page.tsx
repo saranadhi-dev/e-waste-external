@@ -49,14 +49,11 @@ export default function LoginPage() {
 
   return (
     <Card className="border-border shadow-sm">
-      <CardHeader className="text-center pb-6">
-        <div className="mx-auto mb-3 grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
+      <CardHeader className="text-center pb-2">
+        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
           <RecycleIcon className="size-6" />
         </div>
         <CardTitle className="text-xl font-bold tracking-tight">Store Owner Login</CardTitle>
-        <CardDescription>
-          Sign in to manage your e-waste collection and entries
-        </CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -75,7 +72,6 @@ export default function LoginPage() {
             id="login-email"
             type="email"
             label="Email address"
-            placeholder="storeowner@example.com"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -101,7 +97,6 @@ export default function LoginPage() {
             <Input
               id="login-password"
               type="password"
-              placeholder="••••••••"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);

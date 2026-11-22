@@ -84,10 +84,7 @@ export default function AddEwastePage() {
     <div className="max-w-4xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-page-title text-foreground">Add New E-Waste Entry</h1>
-          <p className="text-secondary mt-1">
-            Register electronics, components, and devices for collection and tracking.
-          </p>
+          <h1 className="text-page-title text-foreground">Add New Entry</h1>
         </div>
         <Link href="/ewaste">
           <Button variant="ghost" size="sm">
@@ -114,20 +111,16 @@ export default function AddEwastePage() {
             </div>
             <div>
               <CardTitle className="text-base font-semibold">Item Specification</CardTitle>
-              <CardDescription>
-                Provide accurate details and photos of the electronic items
-              </CardDescription>
             </div>
           </div>
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+          <form onSubmit={handleSubmit} className="space-y-3" noValidate>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Input
                 id="item-name"
                 label="Item Name *"
-                placeholder="e.g. Dell Latitude E7470 or iPhone 11"
                 value={formData.itemName}
                 onChange={(e) => handleChange("itemName", e.target.value)}
                 error={errors.itemName}
@@ -153,7 +146,6 @@ export default function AddEwastePage() {
             <Textarea
               id="item-description"
               label="Item Description *"
-              placeholder="Detail model numbers, specifications, visible wear, battery status..."
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
               error={errors.description}
@@ -166,7 +158,6 @@ export default function AddEwastePage() {
                 type="number"
                 min={1}
                 label="Quantity *"
-                placeholder="1"
                 value={formData.quantity}
                 onChange={(e) => handleChange("quantity", e.target.value)}
                 error={errors.quantity}
@@ -213,7 +204,6 @@ export default function AddEwastePage() {
             <Textarea
               id="additional-notes"
               label="Additional Notes (Optional)"
-              placeholder="Any special handling, storage requirements, or pickup instructions..."
               value={formData.additionalNotes || ""}
               onChange={(e) => handleChange("additionalNotes", e.target.value)}
             />
