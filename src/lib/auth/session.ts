@@ -32,6 +32,11 @@ export function getSessionCookieOptions(value: string, maxAge = SESSION_EXPIRES_
  * Creates a Firebase session cookie from an ID token.
  */
 export async function createSessionFromIdToken(idToken: string): Promise<string> {
+  const decodedToken = await adminAuth.verifyIdToken(idToken);
+  if (!decodedToken.email_verified) {
+    throw new Error("Email address must be verified before creating a session");
+  }
+
   return await adminAuth.createSessionCookie(idToken, {
     expiresIn: SESSION_EXPIRES_IN,
   });

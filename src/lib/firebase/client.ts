@@ -8,7 +8,8 @@ const isProductionEnvironment = process.env.NEXT_PUBLIC_APP_ENV === "prod";
 
 function parseEmulatorHost(value: string | undefined, variableName: string) {
   if (!value) throw new Error(`${variableName} must be configured when using Firebase emulators`);
-  const [host, port] = value.split(":");
+  const normalized = value.replace(/^https?:\/\//, "");
+  const [host, port] = normalized.split(":");
   return { host, port: Number(port) };
 }
 

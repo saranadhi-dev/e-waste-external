@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SuccessDialog } from "@/components/ui/modal";
+import { Modal, SuccessDialog } from "@/components/ui/modal";
 import { ImageUploader } from "@/components/forms/image-uploader";
 import { PackageIcon, AlertCircleIcon, ArrowRightIcon } from "@/components/ui/icons";
 import {
@@ -38,6 +38,7 @@ export default function AddEwastePage() {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showStoreSetupModal, setShowStoreSetupModal] = useState(false);
 
   const handleChange = (field: keyof EwasteEntryInput, value: unknown) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -67,6 +68,10 @@ export default function AddEwastePage() {
 
       const json = await res.json();
       if (!res.ok) {
+        if (res.status === 403 && json.error === "Please setup your store to add waste entiries") {
+          setShowStoreSetupModal(true);
+          return;
+        }
         setServerError(json.error || "Failed to submit entry");
         return;
       }
@@ -234,6 +239,17 @@ export default function AddEwastePage() {
         title="Entry Submitted"
         message="Your e-waste collection entry has been registered successfully with Pending status."
         onConfirm={() => router.push("/ewaste")}
+      />
+
+      <Modal
+        open={showStoreSetupModal}
+        onOpenChange={setShowStoreSetupModal}
+        title="Store setup required"
+        description="Please setup your store to add waste entiries"
+        actions={[{
+          label: "Setup store",
+          onClick: () => router.push("/settings"),
+        }]}
       />
     </div>
   );

@@ -134,7 +134,7 @@ export function Modal({
                 </h2>
               )}
               {description && (
-                <p id={descId} className="text-secondary mt-1 text-sm">
+                <p id={descId} className="text-description mt-1 text-sm">
                   {description}
                 </p>
               )}

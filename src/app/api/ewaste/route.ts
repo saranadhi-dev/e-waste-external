@@ -5,7 +5,6 @@ import {
   createEwasteEntry,
   getEwasteEntriesByOwner,
   getStoreByOwner,
-  saveStoreProfile,
 } from "@/lib/services/firestore";
 import { validateEwasteInput } from "@/lib/validations/ewaste";
 import type { EwasteEntryInput } from "@/types/ewaste";
@@ -49,20 +48,9 @@ export async function POST(req: NextRequest) {
       return apiError("Validation failed", 400, validation.errors);
     }
 
-    // Check store exists or ensure owner has a store profile
-    let store = await getStoreByOwner(auth.user.uid);
-    if (!store) {
-      // Create a default store profile if one hasn't been set up yet
-      store = await saveStoreProfile(auth.user.uid, {
-        storeName: "My E-Waste Store",
-        ownerName: auth.user.name || "Store Owner",
-        email: auth.user.email,
-        phone: "+1 555-0100",
-        address: "Store Address Pending",
-        city: "City",
-        state: "State",
-        pincode: "000000",
-      });
+    const store = await getStoreByOwner(auth.user.uid);
+    if (!store || !store.storeName?.trim()) {
+      return apiError("Please setup your store to add waste entiries", 403);
     }
 
     const input: EwasteEntryInput = {

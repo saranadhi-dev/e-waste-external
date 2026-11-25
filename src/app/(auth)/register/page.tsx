@@ -41,8 +41,7 @@ export default function RegisterPage() {
 
     try {
       await registerWithEmail({ fullName, email, password });
-      router.push("/dashboard");
-      router.refresh();
+      router.push("/login");
     } catch (err: unknown) {
       console.error("Registration failed:", err);
       const message =
