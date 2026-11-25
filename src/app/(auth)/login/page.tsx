@@ -6,8 +6,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Modal } from "@/components/ui/modal";
 import { RecycleIcon, AlertCircleIcon } from "@/components/ui/icons";
-import { loginWithEmail } from "@/lib/auth/client-auth";
+import {
+  loginWithEmail,
+  resendVerificationLink,
+  EMAIL_NOT_VERIFIED_ERROR,
+} from "@/lib/auth/client-auth";
 import { validateLogin } from "@/lib/validations/auth";
 
 export default function LoginPage() {
@@ -17,6 +22,8 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [resendingVerification, setResendingVerification] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,13 +49,15 @@ export default function LoginPage() {
           ? err.message.replace("Firebase: ", "")
           : "Invalid email or password. Please try again.";
       setServerError(message);
+      setShowVerificationModal(message === EMAIL_NOT_VERIFIED_ERROR);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card className="border-border shadow-sm">
+    <>
+      <Card className="border-border shadow-sm">
       <CardHeader className="text-center pb-2">
         <div className="mx-auto grid size-12 place-items-center rounded-xl bg-primary text-primary-foreground">
           <RecycleIcon className="size-6" />
@@ -128,6 +137,34 @@ export default function LoginPage() {
           </Link>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+
+      <Modal
+        open={showVerificationModal}
+        onOpenChange={setShowVerificationModal}
+        title="Email verification required"
+        description={EMAIL_NOT_VERIFIED_ERROR}
+        actions={[
+          {
+            label: "Resend verify link",
+            loading: resendingVerification,
+            onClick: async () => {
+              setResendingVerification(true);
+              try {
+                await resendVerificationLink({ email, password });
+                setShowVerificationModal(false);
+                setServerError("A new verification link has been sent to your email.");
+              } catch (err: unknown) {
+                setServerError(
+                  err instanceof Error ? err.message.replace("Firebase: ", "") : "Unable to resend verification link.",
+                );
+              } finally {
+                setResendingVerification(false);
+              }
+            },
+          },
+        ]}
+      />
+    </>
   );
 }

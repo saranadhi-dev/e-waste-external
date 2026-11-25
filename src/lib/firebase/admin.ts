@@ -2,6 +2,15 @@ import * as admin from "firebase-admin";
 
 const isProductionEnvironment = process.env.APP_ENV === "prod";
 
+// The Firebase Admin SDK reads this exact variable for the Storage emulator.
+// Keep accepting STORAGE_EMULATOR_HOST for compatibility with the project env.
+if (!isProductionEnvironment && !process.env.FIREBASE_STORAGE_EMULATOR_HOST) {
+  const storageEmulatorHost = process.env.STORAGE_EMULATOR_HOST?.replace(/^https?:\/\//, "");
+  if (storageEmulatorHost) {
+    process.env.FIREBASE_STORAGE_EMULATOR_HOST = storageEmulatorHost;
+  }
+}
+
 
 function formatPrivateKey(key: string | undefined): string | undefined {
   if (!key) return undefined;
